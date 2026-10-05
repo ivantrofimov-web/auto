@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import sharp from 'sharp'
 
-const out = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../public/img')
+const out = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../app/public/img')
 const [W, H] = [960, 540]
 const QUALITY = 80
 

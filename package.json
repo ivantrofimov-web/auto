@@ -6,11 +6,12 @@
   "scripts": {
     "dev": "vite",
     "images": "node scripts/make-images.mjs",
-    "build": "vite build && vite build --ssr src/entry-server.jsx --outDir dist-ssr && node scripts/prerender.mjs",
+    "build": "vite build && vite build --ssr src/entry-server.jsx --outDir ../dist-ssr && node scripts/prerender.mjs",
     "check": "node scripts/check.mjs",
     "preview": "vite preview",
     "fonts": "node scripts/make-fonts.mjs",
-    "phone": "vite preview --host 0.0.0.0 --port 4173 --strictPort"
+    "phone": "vite preview --host 0.0.0.0 --port 4173 --strictPort",
+    "publish": "npm run build && npm run check && node scripts/publish.mjs"
   },
   "dependencies": {
     "react": "^19.3.0",

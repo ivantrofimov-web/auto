@@ -7,7 +7,7 @@ import subsetFont from 'subset-font'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const src = (pkg, file) => path.join(root, 'node_modules/@fontsource-variable', pkg, 'files', file)
-const out = path.join(root, 'src/fonts')
+const out = path.join(root, 'app/src/fonts')
 
 const range = (from, to) =>
   Array.from({ length: to - from + 1 }, (_, i) => String.fromCodePoint(from + i)).join('')

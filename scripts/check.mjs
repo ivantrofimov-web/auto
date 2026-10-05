@@ -54,7 +54,7 @@ absolute.forEach((line) => console.log('  ' + line))
 verdict(absolute.length === 0, 'абсолютных путей нет')
 
 // 3. Заглушки.
-const sources = [...(await walk(path.join(root, 'src'))).filter((f) => /\.(jsx?|css)$/.test(f)), path.join(dist, 'index.html')]
+const sources = [...(await walk(path.join(root, 'app/src'))).filter((f) => /\.(jsx?|css)$/.test(f)), path.join(dist, 'index.html')]
 const stubs = []
 for (const file of sources) {
   const body = await readFile(file, 'utf8')
