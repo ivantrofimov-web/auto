@@ -1,0 +1,1411 @@
+/* ───────── Шрифты: урезаны до кириллицы, цифр и пунктуации (scripts/make-fonts.mjs) ───────── */
+
+@font-face {
+  font-family: 'Sofia Sans Extra Condensed';
+  src: url('./fonts/display-cyr.woff2') format('woff2');
+  font-weight: 800;
+  font-display: swap;
+  unicode-range: U+0400-045F, U+2116;
+}
+@font-face {
+  font-family: 'Sofia Sans Extra Condensed';
+  src: url('./fonts/display-lat.woff2') format('woff2');
+  font-weight: 800;
+  font-display: swap;
+  unicode-range: U+0020-00FF, U+2000-206F;
+}
+@font-face {
+  font-family: 'Golos Text';
+  src: url('./fonts/text-cyr.woff2') format('woff2');
+  font-weight: 400 600;
+  font-display: swap;
+  unicode-range: U+0400-045F, U+2116;
+}
+@font-face {
+  font-family: 'Golos Text';
+  src: url('./fonts/text-lat.woff2') format('woff2');
+  font-weight: 400 600;
+  font-display: swap;
+  unicode-range: U+0020-00FF, U+2000-206F;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('./fonts/mono-digits.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+
+/* ───────── Материалы цеха ───────── */
+
+:root {
+  --beton: #d6d1c4; /* шлифованный бетонный пол — фон, тёплый сдвиг к разметке */
+  --chugun: #1c1a16; /* чугун станины — текст и тёмные плоскости */
+  --otsinkovka: #8f8c80; /* оцинкованный профлист — линии сетки, вторичное */
+  --razmetka: #f2b300; /* жёлтая напольная разметка — действие и «ваше решение» */
+  --surik: #a3361a; /* железный сурик, грунт по металлу — ошибки */
+
+  --beton-svet: #e6e2d7; /* тот же бетон под лампой: панели и поля */
+  --chugun-tih: #4d4a42; /* чугун в тени: второстепенный текст */
+
+  --display: 'Sofia Sans Extra Condensed', 'Arial Narrow', 'Roboto Condensed', sans-serif;
+  --text: 'Golos Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', Consolas, 'Courier New', monospace;
+
+  --pad: 1rem;
+  --line: 1px solid var(--otsinkovka);
+  --rule: 2px solid var(--chugun);
+}
+
+@media (min-width: 900px) {
+  :root {
+    --pad: 1.5rem;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 1rem;
+}
+
+body {
+  margin: 0;
+  background: var(--beton);
+  color: var(--chugun);
+  font: 400 1rem/1.5 var(--text);
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+dl,
+dd,
+figure {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  text-decoration-color: var(--razmetka);
+}
+
+:focus-visible {
+  outline: 3px solid var(--chugun);
+  outline-offset: 3px;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.num {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+h1,
+h2,
+h3,
+.brand,
+.btn {
+  font-family: var(--display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.005em;
+}
+
+h2 {
+  font-size: clamp(2.6rem, 9vw, 5rem);
+  line-height: 0.88;
+  text-wrap: balance;
+}
+
+/* ───────── Лист: рамка страницы и вертикальные линии сетки в четыре колонки ───────── */
+
+.page {
+  max-width: 80rem;
+  margin: 0 auto;
+  border-inline: var(--line);
+}
+
+@media (min-width: 900px) {
+  .page {
+    background: linear-gradient(to right, transparent calc(100% - 1px), var(--otsinkovka) 0) 0 0 / 25% 100%;
+  }
+}
+
+/* ───────── Шапка ───────── */
+
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  border-bottom: var(--rule);
+  background: var(--beton);
+}
+
+.brand {
+  padding: 0.6rem var(--pad) 0.5rem;
+  font-size: 1.9rem;
+  line-height: 0.9;
+  text-decoration: none;
+}
+
+.brand span {
+  display: block;
+  font: 500 0.6875rem/1.4 var(--text);
+  letter-spacing: 0.08em;
+  color: var(--chugun-tih);
+}
+
+.top nav {
+  order: 3;
+  flex: 1 0 100%;
+  border-top: var(--line);
+  overflow-x: auto;
+}
+
+.top nav ul {
+  display: flex;
+  white-space: nowrap;
+}
+
+.top nav a {
+  display: block;
+  padding: 0.7rem var(--pad);
+  font-size: 0.875rem;
+  text-decoration: none;
+  border-right: var(--line);
+}
+
+.top nav a:hover {
+  background: var(--chugun);
+  color: var(--beton);
+}
+
+.top-contact {
+  margin-left: auto;
+  padding: 0.6rem var(--pad) 0.5rem;
+  text-align: right;
+  line-height: 1.2;
+}
+
+.top-contact a {
+  font: 500 1.0625rem/1.3 var(--mono);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.top-contact span {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--chugun-tih);
+}
+
+@media (min-width: 900px) {
+  .top {
+    flex-wrap: nowrap;
+  }
+  .brand {
+    flex: 0 0 25%;
+  }
+  .top nav {
+    order: 0;
+    flex: 1 1 auto;
+    border-top: 0;
+    border-left: var(--line);
+  }
+  .top nav ul {
+    height: 100%;
+  }
+  .top nav a {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding-inline: 1rem;
+  }
+}
+
+/* ───────── Первый экран ───────── */
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 34%;
+  overflow: hidden;
+  border-bottom: var(--rule);
+}
+
+.hero-main {
+  display: contents;
+}
+
+.hero-label {
+  grid-column: 1;
+  align-self: start;
+  padding: 1.25rem 0 0 var(--pad);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--chugun-tih);
+}
+
+h1 {
+  grid-column: 1 / -1;
+  padding: 1rem var(--pad) 0;
+  font-size: clamp(4.25rem, 21vw, 11.5rem);
+  line-height: 0.8;
+}
+
+h1 span {
+  display: block;
+}
+
+.hero-lead {
+  grid-column: 1 / -1;
+  max-width: 34rem;
+  padding: 1.25rem var(--pad) 0;
+  font-size: 1.0625rem;
+}
+
+.text-link {
+  grid-column: 1 / -1;
+  justify-self: start;
+  margin: 1rem var(--pad) 1.75rem;
+  font-weight: 600;
+}
+
+/* Шестерёнка. Объём — стопка одинаковых контуров, разнесённых по оси Z и наклонённых в перспективе.
+   Проворот задаёт переменная --turn (градусы), её пишет скрипт при прокрутке. */
+
+.gear-scene {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  width: 150%;
+  max-width: 12rem;
+  margin: 0.75rem -2.25rem -1.5rem 0;
+  aspect-ratio: 1;
+  perspective: 700px;
+  pointer-events: none;
+}
+
+.gear {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: rotateX(48deg) rotateY(-22deg) rotateZ(calc(var(--turn, 0) * 1deg));
+  will-change: transform;
+}
+
+.gear-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform: translateZ(calc((var(--i) - 8) * 0.016 * var(--gear-size, 12rem)));
+  fill: var(--chugun);
+}
+
+.gear-layer:last-child {
+  fill: var(--otsinkovka);
+  stroke: var(--chugun);
+  stroke-width: 1.5;
+}
+
+.gear-marks {
+  fill: none;
+  stroke: var(--chugun);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gear {
+    --turn: 0 !important;
+    will-change: auto;
+  }
+}
+
+.hero-bottom {
+  grid-column: 1 / -1;
+  display: grid;
+  border-top: var(--rule);
+}
+
+.hero-cta {
+  display: flex;
+  align-items: flex-end;
+  min-height: 5rem;
+  padding: 1rem var(--pad) 0.9rem;
+  background: var(--razmetka);
+  font: 800 2rem/0.9 var(--display);
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.hero-cta:hover,
+.btn:hover {
+  background: var(--chugun);
+  color: var(--razmetka);
+}
+
+/* Образец заказ-наряда: бланк, а не рекламные цифры */
+.order {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--beton-svet);
+  text-align: left;
+  font-size: 0.9375rem;
+}
+
+.order caption {
+  padding: 0.6rem var(--pad);
+  border-bottom: var(--line);
+  background: var(--beton-svet);
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.order caption span {
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--surik);
+  color: var(--surik);
+}
+
+.order th,
+.order td {
+  padding: 0.5rem var(--pad);
+  border-bottom: var(--line);
+  vertical-align: baseline;
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+.order th {
+  padding-right: 0;
+}
+
+.order small {
+  font-size: 0.8125rem;
+  color: var(--chugun-tih);
+}
+
+.order s {
+  margin-right: 0.5rem;
+  color: var(--chugun-tih);
+}
+
+.order tfoot tr:first-child > * {
+  border-top: var(--rule);
+}
+
+.order tfoot th,
+.order tfoot .num {
+  font-weight: 600;
+}
+
+.order tfoot .num {
+  font-weight: 500;
+  font-size: 1.125rem;
+}
+
+.order .order-foot td {
+  border-bottom: 0;
+  font-size: 0.8125rem;
+  color: var(--chugun-tih);
+}
+
+.hazard {
+  grid-column: 1 / -1;
+  height: 0.875rem;
+  background: repeating-linear-gradient(-55deg, var(--chugun) 0 14px, var(--razmetka) 14px 28px);
+}
+
+@media (min-width: 600px) {
+  .gear-scene {
+    max-width: 17rem;
+    --gear-size: 17rem;
+    grid-row: 1 / span 4;
+    align-self: center;
+    margin: 1rem -3rem 0 0;
+  }
+  h1,
+  .hero-lead,
+  .text-link {
+    grid-column: 1;
+  }
+}
+
+@media (min-width: 900px) {
+  .hero {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .hero-label,
+  h1,
+  .hero-lead,
+  .text-link {
+    grid-column: 1 / span 3;
+  }
+  .hero-label {
+    padding-top: 2rem;
+  }
+  .hero-lead {
+    font-size: 1.1875rem;
+    max-width: 38rem;
+  }
+  .text-link {
+    margin-bottom: 2.5rem;
+  }
+  .gear-scene {
+    grid-column: 4;
+    width: 135%;
+    max-width: 27rem;
+    --gear-size: 27rem;
+    margin: 0 -7rem 0 0;
+    perspective: 1100px;
+  }
+  .hero-bottom {
+    grid-template-columns: 3fr 1fr;
+  }
+  .hero-cta {
+    order: 2;
+    padding-bottom: 1.25rem;
+    font-size: 2.75rem;
+  }
+  .order th {
+    width: 66.67%;
+  }
+}
+
+/* ───────── Разделы: левая колонка сетки — метка, три правые — содержание ───────── */
+
+.sec {
+  border-bottom: var(--rule);
+}
+
+.rail-side,
+.rail-main {
+  padding: 2rem var(--pad) 0;
+}
+
+.rail-main {
+  padding-bottom: 2.5rem;
+}
+
+.sec > .rail > .rail-main {
+  padding-bottom: 1.5rem;
+}
+
+.sec-label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sec-num {
+  padding: 0.1rem 0.4rem;
+  background: var(--chugun);
+  color: var(--beton);
+  font: 500 0.8125rem/1.4 var(--mono);
+}
+
+.side-note {
+  margin-top: 1rem;
+  max-width: 34rem;
+  font-size: 0.9375rem;
+  color: var(--chugun-tih);
+}
+
+@media (min-width: 900px) {
+  .rail {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+  }
+  .rail-side,
+  .rail-main {
+    padding-top: 3.5rem;
+  }
+  .rail-main {
+    padding-bottom: 4rem;
+  }
+}
+
+/* ───────── 01. Доверие: таблица «страх → порядок работы» ───────── */
+
+.fears,
+.crew,
+.price-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.fears {
+  margin-top: 2rem;
+  background: var(--beton);
+}
+
+.fears thead th,
+.crew thead th,
+.price-table thead th {
+  padding: 0.5rem 0;
+  border-bottom: var(--rule);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--chugun-tih);
+}
+
+.fears tbody th,
+.fears td {
+  display: block;
+  padding: 0;
+}
+
+.fears thead {
+  display: none;
+}
+
+.fears tbody tr {
+  display: block;
+  padding: 1.25rem 0;
+  border-top: var(--line);
+}
+
+.fears tbody tr:first-child {
+  border-top: var(--rule);
+}
+
+.fears tbody th {
+  margin-bottom: 0.6rem;
+  font: 800 1.75rem/0.95 var(--display);
+  text-transform: uppercase;
+  color: var(--chugun-tih);
+}
+
+.crew-title {
+  margin-top: 3rem;
+  font-size: 2rem;
+  line-height: 0.95;
+}
+
+.crew {
+  margin-top: 1rem;
+  background: var(--beton);
+}
+
+.crew tbody th,
+.crew td {
+  padding: 0.75rem 1rem 0.75rem 0;
+  border-bottom: var(--line);
+  vertical-align: top;
+}
+
+.crew tbody th {
+  font-weight: 600;
+}
+
+.crew td.num {
+  padding-right: 0;
+}
+
+.crew .num span {
+  font-family: var(--text);
+  font-size: 0.8125rem;
+  color: var(--chugun-tih);
+}
+
+.crew-note {
+  margin-top: 1rem;
+  font-size: 0.9375rem;
+  color: var(--chugun-tih);
+}
+
+@media (max-width: 599px) {
+  .crew thead th:nth-child(2),
+  .crew td:nth-child(2) {
+    display: none;
+  }
+}
+
+@media (min-width: 700px) {
+  .fears thead {
+    display: table-header-group;
+  }
+  .fears tbody tr {
+    display: table-row;
+  }
+  .fears tbody th,
+  .fears td {
+    display: table-cell;
+    padding: 1.25rem 0;
+    border-top: var(--line);
+    vertical-align: top;
+  }
+  .fears tbody tr:first-child > * {
+    border-top: 0;
+  }
+  .fears tbody th {
+    width: 42%;
+    padding-right: 2rem;
+  }
+  .crew tbody th {
+    width: 33.34%;
+  }
+}
+
+/* ───────── 02. Прайс ───────── */
+
+.price-search {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  margin: 1.5rem calc(var(--pad) * -1) 0;
+  padding: 0.75rem var(--pad) 0.6rem;
+  background: var(--chugun);
+  color: var(--beton);
+}
+
+.price-search label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.price-search-row {
+  display: flex;
+}
+
+.price-search input {
+  flex: 1;
+  min-width: 0;
+  height: 3.25rem;
+  padding: 0 0.9rem;
+  border: 0;
+  border-radius: 0;
+  background: var(--beton-svet);
+  color: var(--chugun);
+  font: 500 1.125rem var(--text); /* не меньше 16px, иначе iOS приближает страницу при фокусе */
+  appearance: none;
+}
+
+.price-search input::placeholder {
+  color: var(--chugun-tih);
+  font-weight: 400;
+}
+
+.price-search input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.price-search input:focus-visible,
+.price-clear:focus-visible {
+  outline: 3px solid var(--razmetka);
+  outline-offset: 0;
+}
+
+.price-clear {
+  padding: 0 1rem;
+  border: 0;
+  border-radius: 0;
+  background: var(--razmetka);
+  color: var(--chugun);
+  font: 600 0.875rem var(--text);
+  cursor: pointer;
+}
+
+.price-count {
+  margin-top: 0.45rem;
+  font: 500 0.8125rem var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.price-table {
+  background: var(--beton-svet);
+  margin-inline: calc(var(--pad) * -1);
+  width: calc(100% + var(--pad) * 2);
+}
+
+.price-table th,
+.price-table td {
+  padding: 0.7rem 0;
+  border-bottom: var(--line);
+  vertical-align: baseline;
+}
+
+.price-table thead th {
+  padding-top: 0.9rem;
+}
+
+.price-table tr > :first-child {
+  padding-left: var(--pad);
+}
+
+.price-table tr > :last-child {
+  padding-right: var(--pad);
+}
+
+.price-table tbody th {
+  padding-right: 0.75rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.price-table small {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--chugun-tih);
+}
+
+.price-table .from {
+  width: 1.75rem;
+  padding-right: 0.4rem;
+  font-size: 0.8125rem;
+  color: var(--chugun-tih);
+  text-align: right;
+}
+
+.price-table td.num {
+  width: 4.5rem;
+  font-size: 1.125rem;
+}
+
+.price-table .price-group th {
+  padding-top: 1.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: var(--rule);
+  font: 800 1.75rem/1 var(--display);
+  text-transform: uppercase;
+}
+
+.price-empty {
+  margin-inline: calc(var(--pad) * -1);
+  padding: 2rem var(--pad);
+  background: var(--beton-svet);
+  border-bottom: var(--rule);
+}
+
+.price-empty h3 {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  line-height: 0.95;
+}
+
+.price-footnote {
+  margin-top: 1.25rem;
+  max-width: 40rem;
+  font-size: 0.9375rem;
+  color: var(--chugun-tih);
+}
+
+@media (min-width: 900px) {
+  .price-search,
+  .price-table,
+  .price-empty {
+    margin-inline: 0;
+    width: 100%;
+  }
+  .price-search {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 0 1.5rem;
+  }
+  .price-search label {
+    grid-column: 1 / -1;
+  }
+  .price-count {
+    margin: 0;
+    min-width: 10rem;
+    text-align: right;
+  }
+  .price-table td.num {
+    width: 6rem;
+    font-size: 1.25rem;
+  }
+  .price-table .from {
+    width: 3rem;
+  }
+}
+
+/* ───────── 03. Ход ремонта ───────── */
+
+.steps {
+  counter-reset: none;
+  border-top: var(--rule);
+  background: var(--beton);
+}
+
+.steps li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.5rem 1fr;
+  gap: 0 0.5rem;
+  padding: 1.25rem var(--pad) 1.4rem;
+  border-bottom: var(--line);
+}
+
+.steps li:last-child {
+  border-bottom: 0;
+}
+
+.step-num {
+  grid-row: span 3;
+  font: 500 1.125rem/1.6 var(--mono);
+}
+
+.steps h3 {
+  font-size: 2.25rem;
+  line-height: 0.9;
+}
+
+.steps p {
+  margin-top: 0.5rem;
+  font-size: 0.9375rem;
+}
+
+.steps .is-decision {
+  background: var(--razmetka);
+}
+
+.step-mark {
+  justify-self: start;
+  margin-top: 0.9rem;
+  padding: 0.25rem 0.6rem 0.25rem 0.5rem;
+  background: var(--chugun);
+  color: var(--razmetka);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+}
+
+@media (min-width: 900px) {
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .steps li {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem 1.25rem 1.75rem;
+    border-bottom: 0;
+    border-right: var(--line);
+  }
+  .steps li:last-child {
+    border-right: 0;
+  }
+  .step-num {
+    margin-bottom: 3.5rem;
+  }
+  .steps h3 {
+    font-size: 2.75rem;
+  }
+  .step-mark {
+    margin-top: auto;
+    transform: translateY(0.5rem);
+  }
+  .steps p {
+    margin-bottom: 1.25rem;
+  }
+}
+
+/* ───────── 04. Гарантии: тёмная плита ───────── */
+
+.terms {
+  background: var(--chugun);
+  color: var(--beton);
+  border-bottom: 0;
+}
+
+.terms .sec-num {
+  background: var(--razmetka);
+  color: var(--chugun);
+}
+
+.terms :focus-visible {
+  outline-color: var(--razmetka);
+}
+
+.terms-list {
+  display: grid;
+  border-top: 1px solid var(--chugun-tih);
+}
+
+.terms-list > div {
+  padding: 1.25rem var(--pad) 1.5rem;
+  border-bottom: 1px solid var(--chugun-tih);
+}
+
+.terms-list dt {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--otsinkovka);
+}
+
+.terms-list dd {
+  font-size: 0.9375rem;
+}
+
+.terms-list strong {
+  display: block;
+  margin: 0.35rem 0 0.6rem;
+  color: var(--razmetka);
+  font: 800 2.75rem/0.9 var(--display);
+  text-transform: uppercase;
+}
+
+@media (min-width: 700px) {
+  .terms-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .terms-list > div:nth-child(odd) {
+    border-right: 1px solid var(--chugun-tih);
+  }
+}
+
+@media (min-width: 900px) {
+  .terms-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .terms-list > div {
+    border-right: 1px solid var(--chugun-tih);
+    padding-bottom: 2rem;
+  }
+  /* Первые два условия — главные обещания, им по две колонки */
+  .terms-list > div:nth-child(-n + 2) {
+    grid-column: span 2;
+  }
+  .terms-list > div:nth-child(-n + 2) strong {
+    font-size: 5.5rem;
+  }
+  .terms-list > div:nth-child(2),
+  .terms-list > div:last-child {
+    border-right: 0;
+  }
+  .terms-list > div:nth-child(n + 3) {
+    border-bottom: 0;
+  }
+}
+
+/* ───────── 05–06. Контакты и запись ───────── */
+
+.closing {
+  border-top: var(--rule);
+}
+
+.contacts,
+.booking {
+  padding: 2rem var(--pad) 2.5rem;
+}
+
+.contacts h2 {
+  margin-top: 1rem;
+}
+
+.contact-list {
+  margin-top: 1.5rem;
+  border-top: var(--rule);
+}
+
+.contact-list > div {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 0.75rem;
+  padding: 0.8rem 0;
+  border-bottom: var(--line);
+}
+
+.contact-list dt {
+  padding-top: 0.2rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--chugun-tih);
+}
+
+.contact-phone {
+  font: 500 1.375rem/1.2 var(--mono);
+  white-space: nowrap;
+}
+
+.hours-days {
+  display: inline-block;
+  min-width: 3.75rem;
+  font-weight: 600;
+}
+
+.landmark {
+  margin-top: 1.5rem;
+  border: var(--rule);
+  background: var(--beton-svet);
+}
+
+.landmark figcaption {
+  padding: 0.75rem 0.9rem;
+  border-top: var(--rule);
+  font-size: 0.875rem;
+}
+
+.booking {
+  border-top: var(--rule);
+}
+
+/* Плита формы со срезанным углом: внешний слой — кромка, внутренний — поверхность */
+.plate {
+  margin-top: 1rem;
+  padding: 2px;
+  background: var(--chugun);
+  clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 0 100%);
+}
+
+.plate-in {
+  padding: 1.5rem 1.1rem 1.75rem;
+  background: var(--beton-svet);
+  clip-path: polygon(0 0, calc(100% - 27px) 0, 100% 27px, 100% 100%, 0 100%);
+}
+
+.booking h2 {
+  padding-right: 1.5rem;
+  font-size: clamp(2.4rem, 8vw, 3.75rem);
+}
+
+.booking-lead {
+  margin-top: 0.75rem;
+  font-size: 0.9375rem;
+  color: var(--chugun-tih);
+}
+
+.booking form {
+  margin-top: 1.5rem;
+}
+
+.field {
+  margin-bottom: 1.1rem;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.optional {
+  font-weight: 400;
+  color: var(--chugun-tih);
+}
+
+.field input:not([type='checkbox']),
+.field textarea {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 0.85rem;
+  border: 2px solid var(--chugun);
+  border-radius: 0;
+  background: var(--beton);
+  color: var(--chugun);
+  font: 400 1.0625rem/1.4 var(--text);
+  appearance: none;
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.field ::placeholder {
+  color: var(--otsinkovka);
+}
+
+.field input:focus-visible,
+.field textarea:focus-visible {
+  outline: 3px solid var(--razmetka);
+  outline-offset: 0;
+  background: #fff;
+}
+
+.field [aria-invalid='true'] {
+  border-color: var(--surik);
+}
+
+.field-hint,
+.field-error {
+  margin-top: 0.35rem;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.field-hint {
+  color: var(--chugun-tih);
+}
+
+.field-error,
+.form-summary {
+  color: var(--surik);
+  font-weight: 600;
+}
+
+.consent {
+  display: grid;
+  grid-template-columns: 1.5rem 1fr;
+  gap: 0.25rem 0.75rem;
+  align-items: start;
+}
+
+.consent input {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0;
+  accent-color: var(--chugun);
+}
+
+.consent label {
+  margin: 0;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.consent .field-error {
+  grid-column: 2;
+  margin-top: 0;
+}
+
+.form-summary {
+  margin-bottom: 0.9rem;
+  font-size: 0.875rem;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  padding: 1rem 1.25rem 0.9rem;
+  border: 0;
+  border-radius: 0;
+  background: var(--razmetka);
+  color: var(--chugun);
+  font-size: 1.75rem;
+  line-height: 1;
+  text-align: left;
+  cursor: pointer;
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
+}
+
+.btn:disabled {
+  background: var(--otsinkovka);
+  color: var(--chugun);
+  cursor: default;
+}
+
+.form-result {
+  margin-top: 1.1rem;
+  padding: 0.9rem 1rem;
+  background: var(--chugun);
+  color: var(--beton);
+  font-size: 0.9375rem;
+}
+
+.form-result strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--razmetka);
+  font: 800 1.5rem/1 var(--display);
+  text-transform: uppercase;
+}
+
+.form-result.is-fail strong {
+  color: #fff;
+}
+
+@media (min-width: 900px) {
+  .closing {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .contacts,
+  .booking {
+    padding-top: 3.5rem;
+    padding-bottom: 4rem;
+  }
+  .booking {
+    border-top: 0;
+    background: var(--beton);
+    border-left: var(--line);
+  }
+  .plate-in {
+    padding: 2rem 1.75rem 2.25rem;
+  }
+}
+
+/* ───────── Подвал и политика ───────── */
+
+.foot {
+  padding: 1.5rem var(--pad) 2rem;
+  border-top: var(--rule);
+  background: var(--beton);
+  font-size: 0.875rem;
+  color: var(--chugun-tih);
+}
+
+.policy {
+  margin-bottom: 1.25rem;
+  color: var(--chugun);
+}
+
+.policy summary {
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+.policy h3 {
+  margin-top: 1.1rem;
+  font: 600 0.9375rem/1.4 var(--text);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.policy p {
+  max-width: 44rem;
+  margin-top: 0.3rem;
+}
+
+.policy-date {
+  color: var(--chugun-tih);
+}
+
+.foot-note {
+  max-width: 44rem;
+}
+
+.foot-legal {
+  margin-top: 0.5rem;
+}
+
+/* Подписи колонок — текстовым шрифтом, моноширинный оставлен только цифрам */
+thead th.num {
+  font-family: var(--text);
+}
+
+@media (max-width: 599px) {
+  .contact-list > div {
+    grid-template-columns: 5.5rem 1fr;
+  }
+  .contact-phone {
+    font-size: 1.1875rem;
+  }
+}
+
+.contact-list dd {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Заголовок первого экрана: на планшете и десктопе — две строки, чтобы запись оставалась на первом экране */
+.brand span {
+  margin-bottom: 0.25rem;
+}
+
+@media (min-width: 600px) {
+  h1 {
+    font-size: clamp(5.5rem, 15.5vw, 8.75rem);
+  }
+}
+
+@media (min-width: 900px) {
+  h1 {
+    font-size: clamp(8rem, 11.6vw, 9.5rem);
+    padding-top: 0.5rem;
+  }
+}
+
+/* Плотность первого экрана: на телефоне кнопка записи видна без прокрутки, на десктопе блок не занимает весь экран */
+@media (max-width: 599px) {
+  .gear-scene {
+    max-width: 9rem;
+    --gear-size: 9rem;
+    margin: 0.5rem -1.75rem -2.75rem 0;
+  }
+  .hero-lead {
+    padding-top: 1rem;
+    font-size: 1rem;
+  }
+  .text-link {
+    margin: 0.75rem var(--pad) 1.25rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .hero-label {
+    padding-top: 1.5rem;
+  }
+  .hero-lead {
+    padding-top: 1rem;
+  }
+  .text-link {
+    margin: 0.75rem var(--pad) 1.5rem;
+  }
+  .order th,
+  .order td {
+    padding-block: 0.35rem;
+  }
+  .order caption {
+    padding-block: 0.45rem;
+  }
+}
