@@ -9,11 +9,11 @@ export const site = {
 }
 
 export const contacts = {
-  phone: '+7 (343) 288-14-06',
-  phoneHref: 'tel:+73432881406',
+  phone: '+7 (920) 615-45-80',
+  phoneHref: 'tel:+79206154580',
   email: 'zapis@shesterenka-service.ru',
-  city: 'Екатеринбург',
-  address: 'ул. Монтажников, 14, бокс 3',
+  city: 'Калуга',
+  address: 'Грабцевское шоссе, 29, бокс 3',
   landmark:
     'Въезд со стороны шиномонтажного двора, серые ворота с жёлтой полосой. Перед боксом — четыре места для клиентов.',
   hours: [
