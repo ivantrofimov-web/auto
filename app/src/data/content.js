@@ -21,7 +21,7 @@ export const contacts = {
     { days: 'Вс', time: 'выходной' },
   ],
   hoursShort: 'пн–сб 9:00–20:00',
-  mapHref: 'https://yandex.ru/maps/?text=Екатеринбург%2C%20улица%20Монтажников%2C%2014',
+  mapHref: 'https://yandex.ru/maps/?text=Калуга%2C%20Грабцевское%20шоссе%2C%2029',
   legal: 'ИП Гордеев Андрей Викторович',
 }
 
